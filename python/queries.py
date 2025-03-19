@@ -1,13 +1,8 @@
 import sqlite3
-import json
-from typing import Iterable
 
 from fastapi import HTTPException
+from utils import jsonify_data
 
-def jsonify_data(data:Iterable, cursor: sqlite3.Cursor) -> str:
-    cols = [desc[0] for desc in cursor.description]
-    data = [dict(zip(cols, row)) for row in data]
-    return json.dumps(data[0])
 
 class Queries:
     def __init__(self):
@@ -17,35 +12,53 @@ class Queries:
     #   GET FROM DB      #
     ######################
 
-    # Select all urls belonging to an user
-    def get_urls_from_user(self, user_id: int, cursor: sqlite3.Cursor) -> list:
-        return cursor.execute(
-            "SELECT url, short_url FROM urls WHERE owner_id = ?;", (user_id,)
-        ).fetchall()
-
     # Select the full url from the short url
-    def get_long_url(self, shortened_url: str, cursor: sqlite3.Cursor, ) -> str:
+    def get_long_url(
+        self,
+        shortened_url: str,
+        cursor: sqlite3.Cursor,
+    ) -> str:
         return cursor.execute(
             "SELECT url FROM urls WHERE short_url = ?;", (shortened_url,)
         ).fetchone()[0]
-    
-    def check_user_exists(self, username:str, cursor: sqlite3.Cursor) -> bool:
+
+    def check_user_exists(self, username: str, cursor: sqlite3.Cursor) -> bool:
         return cursor.execute(
             "SELECT * FROM users WHERE username = ?;", (username,)
         ).fetchone()
 
+    def get_user_password(self, username: str, cursor: sqlite3.Cursor) -> str:
+        return cursor.execute(
+            "SELECT password FROM users WHERE username = ?;", (username,)
+        ).fetchone()
+
+    # Select all urls belonging to an user
+    def get_urls_from_user(self, user_id: int, cursor: sqlite3.Cursor) -> list:
+        response = cursor.execute(
+            "SELECT url, short_url FROM urls WHERE owner_id = ?;", (user_id,)
+        ).fetchall()
+        return jsonify_data(response, cursor)
+
     def login(self, username: str, password: str, cursor: sqlite3.Cursor):
         if not self.check_user_exists(username, cursor):
             raise HTTPException(status_code=404, detail="User not found")
-    
+
         data = cursor.execute(
-            "SELECT * FROM users WHERE username = ? AND password = ?;", (username, password)
+            "SELECT * FROM users WHERE username = ? AND password = ?;",
+            (username, password),
         ).fetchone()
 
         if data is None:
             raise HTTPException(status_code=404, detail="Wrong Password")
 
         return jsonify_data([data], cursor)
+
+    def short_url_exists(self, short_url: str, cursor: sqlite3.Cursor) -> bool:
+        response = cursor.execute(
+            "SELECT * FROM urls WHERE short_url = ?;", (short_url,)
+        )
+
+        return response.fetchone() is not None
 
     ######################
     #   ADD TO DB        #
@@ -62,20 +75,13 @@ class Queries:
 
     # Create a new user
     def add_user(self, username: str, password: str, cursor: sqlite3.Cursor):
+        try:
             cursor.execute(
                 "INSERT INTO users (username, password) VALUES (?, ?);",
                 (username, password),
             )
-
-        # except sqlite3.IntegrityError as e:
-        #     if "NOT NULL constraint failed: users.username" in str(e):
-        #         return "Username cannot be empty"
-            
-        #     elif "NOT NULL constraint failed: users.password" in str(e):
-        #         return "Password cannot be empty"
-
-        #     elif "UNIQUE constraint failed: users.username" in str(e):
-        #         return "Username already exists"
+        except sqlite3.IntegrityError:
+            raise HTTPException(status_code=409, detail="User already exists")
 
     ######################
     #   DELETE FROM DB   #
