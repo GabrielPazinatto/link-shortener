@@ -27,7 +27,9 @@ async function add_new_url(event){
         
         const data = await response.json();
         
-        if(!data.ok){
+        console.log(data)
+
+        if(!response.ok){
             alert("Failed to add new URL!");
             return;
         }
@@ -115,7 +117,7 @@ async function delete_selected(event){
     
         data = await response.json();
 
-        if(!data.ok){
+        if(!response.ok){
             alert("Failed to delete selected URLs!");
             location.reload();
             return;
