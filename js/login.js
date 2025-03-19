@@ -24,6 +24,9 @@ async function login(event){
             alert("Login Successful");
             setTimeout(() => {window.location.href = "./user_page.html";}, 500);
         }
+        else{
+            alert("Login Failed: " + data.detail);
+        }
     }
     catch(err){
         console.log(err);
