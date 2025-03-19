@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortener</title>
+
+</head>
+
+<script src="../js/user_page.js" defer></script>
+
+<body>
+    <center>
+        <h1>Shortener</h1>
+        <h3>A simple URL shortener</sub>
+        <h4>User Page</h4>
+        <hr>
+    </center>
+
+    <div style="display: flex ; justify-content: center; align-items: center;">
+        <form>
+            <div class="form-group row">
+                <div class="col-sm-10" style="display: flex; column-gap: 10px;" >
+                    <input type="text" class="form-control" id="url-input" name="url" placeholder="Enter url" required>
+                    <button type="button" class="btn btn-primary" id = shorten-btn>Shorten</button>
+                </div>
+            </div>
+        </form> 
+    </div>
+    <hr>
+
+    <div style="width: 50%; margin: auto; margin-top: 25px;">
+        <center>
+            <b><label for="table">Shortened URLs</label></b>
+        </center>
+        <br>
+        <table class="table table-striped" >
+            <thead class ="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">URL</th>
+                    <th scope="col">Shortened URL</th>
+                </tr>
+            </thead>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+</body>
