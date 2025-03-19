@@ -116,7 +116,7 @@ async function delete_selected(event){
         data = await response.json();
 
         if(!data.ok){
-            alert("Failed to delete selected URLs");
+            alert("Failed to delete selected URLs!");
             location.reload();
             return;
         }
