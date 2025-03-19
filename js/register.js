@@ -38,18 +38,24 @@ async function register(event) {
         return;
     }
 
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ username: username, password: password })
-    });
+    try{
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ username: username, password: password })
+        });
 
-    const data = await response.json();
-    if(response.ok){
-        alert("Registration Successful");
-        setTimeout(() => {window.location.href = "./login.html";}, 500);          
+        const data = await response.json();
+        if(response.ok){
+            alert("Registration Successful");
+            setTimeout(() => {window.location.href = "./login.html";}, 500);          
+        }
+        else{
+            alert(data.message || "Username already exists");
+        }
     }
-    else{
+    catch(err){
+        console.log(err);
         alert(data.message || "Registration Failed");
     }
 }

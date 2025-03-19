@@ -6,26 +6,27 @@ submit_btn.addEventListener('click', login);
 async function login(event){
     event.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    try{
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ username: username, password: password })
-    });
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ username: username, password: password })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if(response.status === 404){
-        alert(data.detail || "Login Failed");
+        if(response.ok && data.id !== null){
+            localStorage.setItem('id', JSON.parse(data).id);
+            localStorage.setItem('username', JSON.parse(data).username);
+            alert("Login Successful");
+            setTimeout(() => {window.location.href = "./user_page.html";}, 500);
+        }
     }
-
-    if(response.ok && data.id !== null){
-        localStorage.setItem('id', JSON.parse(data).id);
-        localStorage.setItem('username', JSON.parse(data).username);
-        alert("Login Successful");
-        //setTimeout(() => {window.location.href = "./index.html";}, 500);
+    catch(err){
+        console.log(err);
+        alert(err || "Login Failed");
     }
-
 }
