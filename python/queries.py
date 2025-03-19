@@ -92,5 +92,10 @@ class Queries:
         cursor.execute("DELETE FROM users WHERE id = ?;", (user_id,))
 
     # Delete a shortened url
-    def delete_url(self, url_id: int, cursor: sqlite3.Cursor) -> None:
-        cursor.execute("DELETE FROM urls WHERE id = ?;", (url_id,))
+    def delete_url(self, user_id: int, short_url: str, cursor: sqlite3.Cursor) -> None:
+        cursor.execute(
+            """ DELETE FROM urls 
+                WHERE owner_id = (SELECT id FROM users WHERE id = ?) 
+                AND short_url = ?; """,
+            (user_id, short_url),
+        )

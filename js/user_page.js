@@ -2,6 +2,7 @@
 const user_id = localStorage.getItem('id');
 const table = document.getElementById('table');
 const shorten_link_btn = document.getElementById('shorten-btn');
+const delete_selected_btn = document.getElementById('delete-btn');
 const API_URL = "http://127.0.0.1:8000/user/";
 
 
@@ -40,7 +41,6 @@ async function add_new_url(event){
     }
 }
 
-
 async function get_user_data(){
     try{
     
@@ -58,13 +58,20 @@ async function get_user_data(){
         var i = 1;
         JSON.parse(data).forEach(entry => {
             let new_row = table.insertRow(-1);
+        
             let count_row = new_row.insertCell(0);
-            let link_cell = new_row.insertCell(1);
-            let short_link_cell = new_row.insertCell(2);
-            
+            let url_cell = new_row.insertCell(1);
+            let short_url_cell = new_row.insertCell(2);
+        
+            let checkbox_cell = new_row.insertCell(3);
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('checkbox'); 
+            checkbox_cell.appendChild(checkbox);
+        
             count_row.innerHTML = i++;
-            link_cell.innerHTML = "<a href = " +entry.url + ">" + entry.url + "</a>";
-            short_link_cell.innerHTML = "<a href = " +entry.short_url + ">" + entry.short_url + "</a>";
+            url_cell.innerHTML = "<a href='" + entry.url + "'>" + entry.url + "</a>";
+            short_url_cell.innerHTML = "<a href='" + entry.short_url + "'>" + entry.short_url + "</a>";
         });
         
     }
@@ -78,4 +85,51 @@ if(localStorage['id'] == undefined || localStorage['id'] == null){
     setTimeout(() => {window.location.href = "./login.html";}, 500);   
 }
 
+function get_selected_short_urls(){
+    var selected_urls = new Array();
+    const checkboxes = document.querySelectorAll('.checkbox');
+
+    checkboxes.forEach(checkbox => {
+        if(checkbox.checked){
+            selected_urls.push(checkbox.parentElement.parentElement.cells[2].innerText);
+        }
+    });
+
+    return selected_urls;
+}
+
+async function delete_selected(event){
+    event.preventDefault();
+
+    var selected_urls = get_selected_short_urls();
+    const user_id = localStorage.getItem('id');
+
+    console.log(JSON.stringify({urls:selected_urls}))
+
+    try{
+        const response = await fetch(`${API_URL}${user_id}/delete_url/`,{
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({urls:selected_urls})
+        });
+    
+        data = await response.json();
+
+        if(!data.ok){
+            alert("Failed to delete selected URLs");
+            location.reload();
+            return;
+        }
+    }
+
+    catch(err){
+        console.log(err);
+        alert("Failed to delete selected URLs" || err);
+        location.reload()
+        return;
+    }
+
+}
+
 shorten_link_btn.addEventListener('click', add_new_url);
+delete_selected_btn.addEventListener('click', delete_selected);

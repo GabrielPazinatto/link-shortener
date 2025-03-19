@@ -41,9 +41,11 @@ class User(BaseModel):
     password: str
 
 
-class new_URL(BaseModel):
+class URL(BaseModel):
     text: str
 
+class URL_list(BaseModel):
+    urls:list[str]
 
 ##########################
 #      GET Endpoints     #
@@ -56,6 +58,10 @@ async def redirect(short_url: str):
 
     return RedirectResponse(url=url)
 
+@app.get("/user/{user_id}/get_data/")
+async def get_urls(user_id: str):
+    urls = db.get_urls_from_user(int(user_id))
+    return JSONResponse(content=urls, status_code=200)
 
 ##########################
 #     POST Endpoints     #
@@ -63,18 +69,11 @@ async def redirect(short_url: str):
 
 
 @app.post("/user/{user_id}/add_url/")
-async def add_url(user_id: int, new_url: new_URL):
+async def add_url(user_id: int, new_url: URL):
     shortened_url: str = db.add_url(user_id=user_id, url=new_url.text)
     return JSONResponse(
         content={"status": "URL added", "short_url": shortened_url}, status_code=200
     )
-
-
-@app.get("/user/{user_id}/get_data/")
-async def get_urls(user_id: str):
-    urls = db.get_urls_from_user(int(user_id))
-    return JSONResponse(content=urls, status_code=200)
-
 
 @app.post("/login/")
 async def login(user: User):
@@ -100,3 +99,8 @@ async def add_user(user: User):
 ################
 # DELETE FROM DB
 ################
+
+@app.post("/user/{user_id}/delete_url/")
+async def delete_url(user_id:int, urls:URL_list):
+    db.delete_url(user_id=user_id, short_urls=urls.urls)
+    return JSONResponse(content={"status":"URL Deleted"}, status_code=200)
