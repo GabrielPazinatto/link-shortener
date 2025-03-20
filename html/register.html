@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shortener</title>
     <style>
+        .btn-div{
+            display: flex;
+            flex-direction: row;
+            margin-top: 25px;
+            column-gap:30px;
+            justify-content: center;
+        }
     </style>
 </head> 
 
@@ -15,10 +22,20 @@
 <body>
     <center>
         <h1>Shortener</h1>
-        <h3>A simple URL shortener</sub>
+        <h3>A simple URL shortener</h3>
         <h4>Register</h4>
         <hr>
     </center>
+
+    <div class="btn-div">
+        <div>
+            <a href="login.html" class="btn btn-primary">Log In</a>
+        </div>
+        <div>
+            <a href="user_page.html" class="btn btn-primary">User Page</a>
+        </div>
+    </div>
+    <hr>
     <div style="display: flex ; justify-content: center; align-items: center;">
         <form>
             <div class="form-group row">
@@ -40,10 +57,8 @@
                 </div>
             </div><br>
             <center>    
-                <input type="submit" id="submit-btn" value="Submit" onsubmit="return false;">
+                <input type="button" id="submit-btn" value="Submit">
             </center>
         </form>
     </div>
-
-</div>
 </body> 

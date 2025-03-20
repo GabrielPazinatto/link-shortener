@@ -6,6 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shortener</title>
+
+    <style>
+        .btn-div{
+            display: flex;
+            flex-direction: row;
+            margin-top: 25px;
+            column-gap:30px;
+            justify-content: center;
+        }
+    </style>
+
 </head> 
 
 <script src="../js/login.js" defer></script>
@@ -17,6 +28,16 @@
         <h4>Log In</h4>
         <hr>
     </center>
+
+    <div class="btn-div">
+        <div>
+            <a href="register.html" class="btn btn-primary">Register</a>
+        </div>
+        <div>
+            <a href="user_page.html" class="btn btn-primary">User Page</a>
+        </div>
+    </div>
+    <hr>
 
     <div style="display: flex ; justify-content: center; align-items: center;">
         <form>
@@ -33,7 +54,7 @@
                 </div>
             </div><br>
             <center>    
-                <input type="submit" id="login-btn" value="Log In" onsubmit="return false;">
+                <input type="reset" id="login-btn" value="Log In" onsubmit="return false;">
             </center>
         </form>
     </div>
