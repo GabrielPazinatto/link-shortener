@@ -1,23 +1,29 @@
-import sqlite3
+import os
+from dotenv import find_dotenv, load_dotenv
+from psycopg2 import pool
 
-from queries import Queries
-from utils import generate_random_url
+from python.queries import Queries
+from python.utils import generate_random_url
 
-_DB_TABLE_CREATION_FILE_PATH: str = "../sql/tables.sql"
-_DB_FILE_PATH: str = "../sql/database.db"
-
+_MIN_POOL_CONN = 1
+_MAX_POOL_CONN = 10
 
 class DataBase:
     def __init__(self):
-        self._db_connection: sqlite3.Connection = sqlite3.connect(_DB_FILE_PATH)
-        self._db_cursor: sqlite3.Cursor = self._db_connection.cursor()
+
+        dotenv_path = find_dotenv()
+        load_dotenv(dotenv_path)
+        connection_string = os.getenv('DATABASE_URL')
+
+        self._connection_pool = pool.SimpleConnectionPool(
+            _MIN_POOL_CONN,
+            _MAX_POOL_CONN,
+            connection_string
+        )
+        self._db_connection = self._connection_pool.getconn()
+        self._db_cursor = self._db_connection.cursor()
         self._queries: Queries = Queries()
 
-        with open(_DB_TABLE_CREATION_FILE_PATH) as tables:
-            DB_CREATE_TABLES_SCRIPT = tables.read()
-
-        self._db_cursor.executescript(DB_CREATE_TABLES_SCRIPT)
-        self._db_connection.commit()
 
     def execute_query(self, query: str) -> any:
         response = self._db_cursor.execute(query).fetchall()
