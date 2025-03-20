@@ -3,7 +3,7 @@ const user_id = localStorage.getItem('id');
 const table = document.getElementById('table');
 const shorten_link_btn = document.getElementById('shorten-btn');
 const delete_selected_btn = document.getElementById('delete-btn');
-const API_URL = "http://127.0.0.1:8000/user/";
+const API_URL = "link-shortener-9ffo.vercel.app/user/";
 
 
 window.onload = async function(){
