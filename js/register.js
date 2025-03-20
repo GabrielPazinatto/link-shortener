@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/register"
+const API_URL = "link-shortener-9ffo.vercel.app/register"
 
 const submit_btn = document.getElementById('submit-btn');
 submit_btn.addEventListener('click', register);
