@@ -41,6 +41,9 @@ async function add_new_url(event){
         console.log(err);
         alert("Failed to add new URL" || err);
     }
+
+    location.reload();
+
 }
 
 async function get_user_data(){
