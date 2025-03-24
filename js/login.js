@@ -1,4 +1,4 @@
-const API_URL = "link-shortener-9ffo.vercel.app/login/"
+const API_URL = "https://link-shortener-9ffo.vercel.app/login/"
 
 const submit_btn = document.getElementById('login-btn');
 submit_btn.addEventListener('click', login);
