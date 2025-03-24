@@ -46,6 +46,24 @@ async function add_new_url(event){
 
 }
 
+function add_url_table_row(entry, row_count){
+    let new_row = table.insertRow(-1);
+        
+    let count_row = new_row.insertCell(0);
+    let url_cell = new_row.insertCell(1);
+    let short_url_cell = new_row.insertCell(2);
+
+    let checkbox_cell = new_row.insertCell(3);
+    let checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('checkbox'); 
+    checkbox_cell.appendChild(checkbox);
+
+    count_row.innerHTML = row_count;
+    url_cell.innerHTML = "<a href='" + entry.url + "'>" + entry.url + "</a>";
+    short_url_cell.innerHTML = "<a href='" + entry.short_url + "'>" + entry.short_url + "</a>";
+}
+
 async function get_user_data(){
     try{
     
@@ -61,24 +79,19 @@ async function get_user_data(){
         
         table.innerHTML = "";
         var i = 1;
-        JSON.parse(data).forEach(entry => {
-            let new_row = table.insertRow(-1);
-        
-            let count_row = new_row.insertCell(0);
-            let url_cell = new_row.insertCell(1);
-            let short_url_cell = new_row.insertCell(2);
-        
-            let checkbox_cell = new_row.insertCell(3);
-            let checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.classList.add('checkbox'); 
-            checkbox_cell.appendChild(checkbox);
-        
-            count_row.innerHTML = i++;
-            url_cell.innerHTML = "<a href='" + entry.url + "'>" + entry.url + "</a>";
-            short_url_cell.innerHTML = "<a href='" + entry.short_url + "'>" + entry.short_url + "</a>";
-        });
-        
+
+        json_data = JSON.parse(data);
+
+        if(Array.isArray(json_data)){
+            var row_count = 1;
+            json_data.forEach(entry => {
+                add_url_table_row(entry, row_count);
+                row_count++;
+            });
+        }
+        else{        
+            add_url_table_row(json_data, 1);
+        };
     }
     catch(err){
         console.log(err);
@@ -109,8 +122,6 @@ async function delete_selected(event){
     var selected_urls = get_selected_short_urls();
     const user_id = localStorage.getItem('id');
 
-    console.log(JSON.stringify({urls:selected_urls}))
-
     try{
         const response = await fetch(`${API_URL}${user_id}/delete_url/`,{
             method: "POST",
@@ -133,6 +144,8 @@ async function delete_selected(event){
         location.reload()
         return;
     }
+
+    location.reload();
 
 }
 
