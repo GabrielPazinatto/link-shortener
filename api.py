@@ -21,14 +21,9 @@ db: DataBase = DataBase()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://gabrielpazinatto.github.io"
-    ],  
+    allow_origin_regex=r"https://gabrielpazinatto\.github\.io/.*",
     allow_credentials=True,
-    allow_methods=[
-        "GET",
-        "POST",
-    ],  
+    allow_methods=["*"],  
     allow_headers=["*"],  
 )
 
