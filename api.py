@@ -4,8 +4,9 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from pydantic import BaseModel
-
 from python.db import DataBase
+
+API_URL = "https://link-shortener-9ffo.vercel.app/"
 
 ##########################
 #      Initialization    #
@@ -21,14 +22,14 @@ db: DataBase = DataBase()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "*"
-    ],  # Permite requisições de qualquer origem (pode ser restringido)
+        "https://gabrielpazinatto.github.io/link-shortener"
+    ],  
     allow_credentials=True,
     allow_methods=[
         "GET",
         "POST",
-    ],  # Permite todos os métodos (GET, POST, OPTIONS, etc.)
-    allow_headers=["*"],  # Permite todos os cabeçalhos
+    ],  
+    allow_headers=["*"],  
 )
 
 ##########################
@@ -40,7 +41,6 @@ class User(BaseModel):
     username: str
     password: str
 
-
 class URL(BaseModel):
     text: str
 
@@ -50,7 +50,6 @@ class URL_list(BaseModel):
 ##########################
 #      GET Endpoints     #
 ##########################
-
 
 @app.get("/{short_url}")
 async def redirect(short_url: str):
@@ -67,14 +66,6 @@ async def get_urls(user_id: str):
 #     POST Endpoints     #
 ##########################
 
-
-@app.post("/user/{user_id}/add_url/")
-async def add_url(user_id: int, new_url: URL):
-    shortened_url: str = db.add_url(user_id=user_id, url=new_url.text)
-    return JSONResponse(
-        content={"status": "URL added", "short_url": shortened_url}, status_code=200
-    )
-
 @app.post("/login/")
 async def login(user: User):
     user_data = db.login(user.username, user.password)
@@ -89,6 +80,12 @@ async def login(user: User):
 # ADD INTO DB
 ################
 
+@app.post("/user/{user_id}/add_url/")
+async def add_url(user_id: int, new_url: URL):
+    shortened_url: str = db.add_url(user_id=user_id, url=new_url.text)
+    return JSONResponse(
+        content={"status": "URL added", "short_url": API_URL + shortened_url}, status_code=200
+    )
 
 @app.post("/register")
 async def add_user(user: User):
