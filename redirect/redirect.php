@@ -1,5 +1,5 @@
 <?php
-$api_url = "https://link-shortener-9ffo.vercel.app/";
+$api_url = "shortify.rf.gd";
 
 $short_url = trim($_SERVER['REQUEST_URI'], '/');
 
