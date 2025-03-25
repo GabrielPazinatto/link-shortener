@@ -22,8 +22,7 @@ db: DataBase = DataBase()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://gabrielpazinatto.github.io/link-shortener"
-    ],  
+    "https://gabrielpazinatto.github.io"],
     allow_credentials=True,
     allow_methods=[
         "GET",
