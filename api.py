@@ -6,8 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from python.db import DataBase
 
-API_URL = "https://link-shortener-9ffo.vercel.app/"
-
 ##########################
 #      Initialization    #
 ##########################
@@ -83,7 +81,7 @@ async def login(user: User):
 async def add_url(user_id: int, new_url: URL):
     shortened_url: str = db.add_url(user_id=user_id, url=new_url.text)
     return JSONResponse(
-        content={"status": "URL added", "short_url": API_URL + shortened_url}, status_code=200
+        content={"status": "URL added", "short_url": shortened_url}, status_code=200
     )
 
 @app.post("/register")

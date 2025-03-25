@@ -5,6 +5,7 @@ const shorten_link_btn = document.getElementById('shorten-btn');
 const delete_selected_btn = document.getElementById('delete-btn');
 const API_URL = "https://link-shortener-9ffo.vercel.app/user/";
 
+const API_URL_ROOT = "https://link-shortener-9ffo.vercel.app/"
 
 window.onload = async function(){
     get_user_data();
@@ -61,7 +62,7 @@ function add_url_table_row(entry, row_count){
 
     count_row.innerHTML = row_count;
     url_cell.innerHTML = "<a href='" + entry.url + "'>" + entry.url + "</a>";
-    short_url_cell.innerHTML = "<a href='" + entry.short_url + "'>" + entry.short_url + "</a>";
+    short_url_cell.innerHTML = "<a href='" + API_URL_ROOT + entry.short_url + "'>" + API_URL_ROOT + entry.short_url + "</a>";
 }
 
 async function get_user_data(){
