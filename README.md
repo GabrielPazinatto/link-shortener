@@ -1,5 +1,5 @@
 # Link-Shortener
-The application can be accessed through [this link](https://gabrielpazinatto.github.io/pesquisador-de-emendas/).
+The application can be accessed through [this link](https://gabrielpazinatto.github.io/link-shortener/).
 
 ## How it works
 This application is very simple. It uses a PostGreSQL database hosted on Neon, which is accessed through functions in [db.py](./python/db.py) and queries contained in [queries.py](./python/queries.py). In order to encapsulate the database access, a FastAPI API ([api.py](./api.py)), hosted on Vercel, is used.
