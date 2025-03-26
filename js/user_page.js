@@ -104,13 +104,18 @@ if(localStorage['id'] == undefined || localStorage['id'] == null){
     setTimeout(() => {window.location.href = "./login.html";}, 500);   
 }
 
+function extract_url(url) {
+    const parts = url.split("/");
+    return parts[parts.length - 1]; // Retorna a última parte da URL
+}
+
 function get_selected_short_urls(){
     var selected_urls = new Array();
     const checkboxes = document.querySelectorAll('.checkbox');
 
     checkboxes.forEach(checkbox => {
         if(checkbox.checked){
-            selected_urls.push(checkbox.parentElement.parentElement.cells[2].innerText);
+            selected_urls.push(extract_url(checkbox.parentElement.parentElement.cells[2].innerText));
         }
     });
 
