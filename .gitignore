@@ -172,6 +172,5 @@ cython_debug/
 
 ./redirect
 *.db
-main.py
 test.py
 ./vscode/
