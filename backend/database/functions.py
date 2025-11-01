@@ -21,7 +21,6 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
     if get_user_by_username(db, user.username):
         raise HTTPException(status_code=409, detail="User already exists")
 
-    print(user)
     # encryption method has a limit of 72 bytes input
     hashed_password = hash_password(user.password[:72])
     db_user = models.User(username=user.username, password=hashed_password)
