@@ -15,13 +15,13 @@ def create_url(
 ):
     return functions.add_new_url(db=db, url=url.url, user_id=current_user.id)
 
-@router.delete("/{short_url}", status_code=status.HTTP_200_OK)
+@router.delete("/", status_code=status.HTTP_200_OK)
 def delete_url(
-    short_url: str,
+    short_urls: list[str],
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    deleted_url = functions.delete_url(db=db, short_url=short_url, user_id=current_user.id)
-    if not deleted_url:
+    deleted_urls = functions.delete_urls(db=db, short_urls=short_urls, user_id=current_user.id)
+    if not deleted_urls:
         raise HTTPException(status_code=404, detail="URL not found or not owned by user")
-    return {"detail": "URL deleted"}
+    return {"detail": f"{deleted_urls} URLs deleted"}
