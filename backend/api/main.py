@@ -29,9 +29,9 @@ origin = os.getenv("API_ORIGIN")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origin],
+    allow_origins=[origin, "http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["*", "GET", "POST", "PUT", "DELETE", "HEAD"],
     allow_headers=["*"],
 )
 
