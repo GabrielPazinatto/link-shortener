@@ -14,6 +14,9 @@ class Url(UrlBase):
     
     model_config = ConfigDict(from_attributes=True)
 
+class UrlList(BaseModel):
+    urls: List[UrlBase]
+
 class UserBase(BaseModel):
     username: str
 

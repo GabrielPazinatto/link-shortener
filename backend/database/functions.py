@@ -73,3 +73,18 @@ def delete_url(db: Session, short_url: str, user_id: int):
     db.delete(db_url)
     db.commit()
     return {"detail": "URL deleted successfully"}
+
+def delete_urls(db: Session, short_urls: list[str], user_id: int):
+    db_urls = db.query(models.Url).filter(
+        models.Url.short_url.in_(short_urls),
+        models.Url.owner_id == user_id
+    ).all()
+
+    if not db_urls:
+        raise HTTPException(status_code=404, detail="No URLs found or not owned by user")
+    
+    for url in db_urls:
+        db.delete(url)
+        
+    db.commit()
+    return {"detail": f"{len(db_urls)} URLs deleted successfully"}
