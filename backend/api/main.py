@@ -39,7 +39,6 @@ app.add_middleware(
 #        Routers         #
 ##########################
 
-# Inclui os grupos de rotas dos arquivos em /routers
 app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(urls.router, prefix="/urls", tags=["URLs"])
 
