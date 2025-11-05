@@ -13,8 +13,8 @@ export default function URLShortener() {
   const [view, setView] = useState<View>("home")
 
   useEffect(() => {
-    const userId = localStorage.getItem("id")
-    if (userId && view === "home") {
+    const accessToken = localStorage.getItem("accessToken")
+    if (accessToken && view === "home") {
       setView("user")
     }
   }, [])
