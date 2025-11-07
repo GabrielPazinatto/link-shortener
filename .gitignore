@@ -172,6 +172,8 @@ cython_debug/
 
 ./redirect
 *.db
-main.py
 test.py
 ./vscode/
+frontend/node_modules/
+frontend/build/
+frontend/.next
