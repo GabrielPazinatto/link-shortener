@@ -6,16 +6,16 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
 
-from ..database import functions, schemas, models
-from ..database.connection import get_db, engine
+from database import functions, schemas, models
+from database.connection import get_db, engine
 
-from .auth import (
+from api.auth import (
     authenticate_user, 
     create_access_token, 
     ACCESS_TOKEN_EXPIRE_MINUTES
 )
 
-from .routers import users, urls
+from api.routers import users, urls
 
 models.Base.metadata.create_all(bind=engine)
 
