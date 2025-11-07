@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
 
-from ..database import functions, schemas, models
-from ..database.connection import get_db, engine
+from database import functions, schemas, models
+from database.connection import get_db, engine
 
 from .auth import (
     authenticate_user, 
@@ -83,3 +83,7 @@ def redirect_to_long_url(short_url: str, db: Session = Depends(get_db)):
     
     return RedirectResponse(url=long_url)
 
+
+@app.get("/hello")
+def say_hello():
+    return {"message": "Hello, I am alive!"}

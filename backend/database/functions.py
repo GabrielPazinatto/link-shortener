@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from . import models, schemas
-from ..utils import generate_random_url, hash_password, verify_password 
+from utils import generate_random_url, hash_password, verify_password 
 
 def get_user_by_username(db: Session, username: str) -> models.User | None:
     return db.query(models.User).filter(models.User.username == username).first()
