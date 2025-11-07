@@ -177,3 +177,4 @@ test.py
 frontend/node_modules/
 frontend/build/
 frontend/.next
+.vercel
