@@ -4,12 +4,17 @@
     {
       "src": "backend/api/main.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next",
+      "config": { "workDirectory": "frontend" }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "backend/api/main.py"
+      "source": "/api/(.*)",
+      "destination": "/backend/api/main.py"
     }
   ]
 }
