@@ -2,19 +2,25 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/api/main.py",
+      "src": "/backend/api/main.py",
       "use": "@vercel/python"
     },
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/next",
-      "config": { "workDirectory": "frontend" }
+      "src": "/frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "outputDirectory": "frontend/dist"
+      }
     }
   ],
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/backend/api/main.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/dist/index.html"
     }
   ]
 }
