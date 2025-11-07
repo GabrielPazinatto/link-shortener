@@ -1,13 +1,13 @@
 import os
-from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi import APIRouter, FastAPI, Depends, status, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
 
-from database import functions, schemas, models
-from database.connection import get_db, engine
+from ..database import functions, schemas, models
+from ..database.connection import get_db, engine
 
 from .auth import (
     authenticate_user, 
@@ -27,6 +27,8 @@ app = FastAPI()
 
 origin = os.getenv("API_ORIGIN")
 
+print(origin, flush=True)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin, "http://localhost:3000"],
@@ -39,14 +41,16 @@ app.add_middleware(
 #        Routers         #
 ##########################
 
-app.include_router(users.router, prefix="/users", tags=["Users"])
-app.include_router(urls.router, prefix="/urls", tags=["URLs"])
+app_router = APIRouter()
+    
+app.include_router(users.router, prefix="/api/users", tags=["Users"])
+app.include_router(urls.router, prefix="/api/urls", tags=["URLs"])
 
 ##########################
 #   Auth token         #
 ##########################
 
-@app.post("/token", response_model=schemas.Token, tags=["Authentication"])
+@app_router.post("/token", response_model=schemas.Token, tags=["Authentication"])
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), 
     db: Session = Depends(get_db)
@@ -75,7 +79,7 @@ async def login_for_access_token(
     
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.head("/{short_url}", tags=["Redirect"])
+@app_router.head("/{short_url}", tags=["Redirect"])
 def redirect_to_long_url(short_url: str, db: Session = Depends(get_db)):
     long_url = functions.get_original_url(db=db, short_url=short_url)
     if not long_url:
@@ -84,6 +88,8 @@ def redirect_to_long_url(short_url: str, db: Session = Depends(get_db)):
     return RedirectResponse(url=long_url)
 
 
-@app.get("/hello")
+@app_router.get("/hello")
 def say_hello():
     return {"message": "Hello, I am alive!"}
+
+app.include_router(app_router, prefix="/api")

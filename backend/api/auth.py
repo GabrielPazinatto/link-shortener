@@ -6,9 +6,9 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
-from utils import verify_password
-from database import functions, models, schemas
-from database.connection import get_db
+from ..utils import verify_password
+from ..database import functions, models, schemas
+from ..database.connection import get_db
 
 
 SECRET_KEY = os.getenv("SECRET_KEY")
