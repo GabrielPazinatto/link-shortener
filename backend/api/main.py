@@ -83,3 +83,6 @@ def redirect_to_long_url(short_url: str, db: Session = Depends(get_db)):
     
     return RedirectResponse(url=long_url)
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
