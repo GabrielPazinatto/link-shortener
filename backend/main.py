@@ -79,7 +79,7 @@ async def login_for_access_token(
     
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app_router.head("/{short_url}", tags=["Redirect"])
+@app_router.get("/{short_url}", tags=["Redirect"])
 def redirect_to_long_url(short_url: str, db: Session = Depends(get_db)):
     long_url = functions.get_original_url(db=db, short_url=short_url)
     if not long_url:
