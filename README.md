@@ -8,8 +8,11 @@
 
 This is a full-stack URL shortener application built as a portfolio project, demonstrating a modern web architecture with a clear separation of concerns. The backend is a robust RESTful API built with **FastAPI**, and the frontend is a dynamic, reactive Single-Page Application (SPA) built with **React (Next.js)** and **TypeScript**.
 
-
 ![alt text](./images/user_page.png)
+
+### AI Usage disclaimer
+
+This project's frontend (and this README) was mainly built using AI, but the backend, which was the focus of my studies when developing the application, was entirely built by me.
 
 ## Key Features
 
